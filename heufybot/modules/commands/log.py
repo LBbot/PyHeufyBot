@@ -39,11 +39,14 @@ class LogCommand(BotCommand):
             logDate = date.today() - timedelta(delta)
         else:
             try:
-                slashesAndDashes = ["/", "-"]
-                for symbol in slashesAndDashes:
+                for symbol in ["/", "-"]:
                     if symbol in params[0]:
                         formattedDate = params[0].split(symbol)
                         logDate = date(int(formattedDate[0]), int(formattedDate[1]), int(formattedDate[2]))
+                        break
+                if logDate is None:
+                    self.replyPRIVMSG(server, source, error)
+                    return
             except (IndexError, ValueError):
                 self.replyPRIVMSG(server, source, error)
                 return
